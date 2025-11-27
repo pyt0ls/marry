@@ -2,20 +2,40 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Formulário Especial 💗</title>
+    <title>Formulário 💗</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app">
-        <div id="card" class="fade-in">
+
+    <!-- TELA DE LOADING -->
+    <div id="loading">
+        <div class="loader-heart">💗</div>
+        <p>Carregando algo especial...</p>
+    </div>
+
+    <!-- PARTÍCULAS AO FUNDO -->
+    <div id="particles"></div>
+
+    <!-- APLICAÇÃO -->
+    <div id="app" class="hidden">
+        <div id="card" class="fade">
             <h1 id="question"></h1>
-
             <div id="options"></div>
+            <div id="footer">💖 Formulário Especial 💖</div>
+        </div>
 
-            <div id="footer"><p>💖 Formulário Especial 💖</p></div>
+        <div id="finalScreen" class="hidden">
+            <h1 class="finalText">EU SABIA!! 💗🥹</h1>
+            <p class="finalSub">
+                Você acabou de aceitar a melhor decisão da sua vida.
+            </p>
+
+            <button id="copyBtn">Copiar Mensagem 💌</button>
+            <div id="hearts"></div>
         </div>
     </div>
 
     <script src="main.js"></script>
+
 </body>
 </html>

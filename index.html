@@ -1,30 +1,41 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário Especial</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Formulário Especial 💗</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="container">
-        <div id="card">
-            <h1 id="question">Carregando...</h1>
-            <div id="options"></div>
-        </div>
+  <!-- LAYER de EMOJIS (obrigatório) -->
+  <div id="emoji-layer" aria-hidden="true"></div>
 
-        <div id="final-screen" class="hidden">
-            <h1>Eu já sabia que você ia dizer SIM 😳❤️</h1>
-            <p>Agora copie essa mensagem e me envie 😉👇</p>
+  <div id="app">
+    <div id="card" class="panel">
+      <div id="stageBar"><div id="stageFill"></div></div>
 
-            <textarea id="copyText">Eu aceito namorar com você ❤️✨</textarea>
+      <h1 id="question">Carregando...</h1>
+      <p id="subtitle" class="muted"></p>
 
-            <button id="copyBtn">Copiar Mensagem</button>
-            <p id="copied" class="hidden">Copiado! 💖</p>
-        </div>
+      <div id="optionsWrapper">
+        <div id="options" aria-live="polite"></div>
+      </div>
+
+      <div id="footer">💖 Formulário Especial 💖</div>
     </div>
 
-<script src="main.js"></script>
+    <!-- TELA FINAL -->
+    <div id="final-screen" class="hidden">
+      <h1 class="finalTitle">EU SABIA QUE VOCÊ IA DIZER SIM! 😳❤️</h1>
+      <p class="finalSub">Agora copie essa mensagem e me manda 😉👇</p>
+
+      <textarea id="copyText" readonly>Eu aceito namorar com você ❤️✨</textarea>
+      <button id="copyBtn" class="primary">Copiar Mensagem 💌</button>
+      <p id="copied" class="hidden">Copiado! 💖</p>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
 </body>
 </html>

@@ -1,127 +1,109 @@
-// 🟣 Perguntas
-const questions = [
-    { q: "1️⃣ Como você me descreveria?", options: ["Incrível", "Fofo(a)", "Legal", "Interessante"] },
-    { q: "2️⃣ O que você sente quando fala comigo?", options: ["Alegria", "Vergonha", "Frio na barriga", "Carinho"] },
-    { q: "3️⃣ O quanto você gosta de mim?", options: ["Muito", "Demais", "Pra caramba", "Um monte"] },
-    { q: "4️⃣ Acha que combinamos juntos?", options: ["Sim 😳", "Com certeza 💗", "Muito", "Demais"] },
-    { q: "5️⃣ Qual seria nosso encontro perfeito?", options: ["Cinema", "Piquenique", "Restaurante", "Passeio noturno"] },
-    { q: "6️⃣ Se viajássemos, pra onde iríamos?", options: ["Praia", "Montanha", "Cidade grande", "Europa"] },
-    { q: "7️⃣ Você acha que eu te faço bem?", options: ["Sim 💕", "Muito 😳", "Demais 💗", "Certeza!!"] },
-    { q: "8️⃣ Já sentiu saudade de mim?", options: ["Sim", "Óbvio", "Sempre", "Demais 😔"] },
-    { q: "9️⃣ Você acha que daríamos certo juntos?", options: ["Sim", "Muito", "Com certeza", "Óbvio 💞"] },
-
-    // FINAL
-    { q: "🔟 Agora a mais importante... você quer namorar comigo? ❤️", final: true }
+// Emojis diferentes para cada pergunta
+const emojiThemes = [
+    ["💖","✨","💕","🌸"],
+    ["😳","💗","💞","🫶"],
+    ["😍","🔥","💘","💓"],
+    ["😂","😄","😊","😅"],
+    ["🌹","🌺","🌷","💐"],
+    ["🌊","🌴","☀️","🐚"],
+    ["🎶","🎵","💫","⭐"],
+    ["😭","😔","😳","😩"],
+    ["💑","💍","❤️","💞"],
+    ["💘","💖","😍","🫶"]
 ];
 
-let current = 0;
+function spawnEmojis(list) {
+    const layer = document.getElementById("emoji-layer");
+    layer.innerHTML = ""; // limpa animação anterior
 
-// ELEMENTOS
-const card = document.getElementById("card");
-const questionEl = document.getElementById("question");
-const optionsEl = document.getElementById("options");
-const finalScreen = document.getElementById("finalScreen");
+    for (let i = 0; i < 12; i++) {
+        const em = document.createElement("div");
+        em.classList.add("emoji");
+        em.textContent = list[Math.floor(Math.random() * list.length)];
 
-// NEON POR ETAPA
-const pageColors = [
-    "#ff009d", "#ae00ff", "#009dff", "#00ffaa", "#ff7a00",
-    "#ff005e", "#b300ff", "#0099ff", "#00ffea", "#ff007c"
-];
+        em.style.left = Math.random() * 100 + "vw";
+        em.style.animationDuration = (2.5 + Math.random() * 2) + "s";
+        em.style.fontSize = (22 + Math.random() * 20) + "px";
 
-// 🟣 TELA DE LOADING
-setTimeout(() => {
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("app").classList.remove("hidden");
-}, 1500);
-
-// 🟣 PARTÍCULAS
-function createParticles() {
-    const particles = document.getElementById("particles");
-    for (let i = 0; i < 35; i++) {
-        const p = document.createElement("div");
-        p.className = "particle";
-        p.innerHTML = "💗";
-        p.style.left = Math.random() * 100 + "%";
-        p.style.animationDuration = (3 + Math.random() * 6) + "s";
-        particles.appendChild(p);
+        layer.appendChild(em);
     }
 }
-createParticles();
 
-// 🟣 LÓGICA DAS QUESTÕES
+// Perguntas
+const questions = [
+    { q: "1/10 — Como você me descreveria?", options: ["Incrível 😳", "Fofo(a) ❤️", "Engraçado(a) 😂"] },
+    { q: "2/10 — O que sente quando fala comigo?", options: ["Borboletas 🦋", "Felicidade ✨", "Vergonha 😳"] },
+    { q: "3/10 — O quanto você gosta de mim?", options: ["Muito ❤️", "Bastante 😳", "Mais do que deveria 😅"] },
+    { q: "4/10 — Você acha que combinamos?", options: ["Sim 💞", "Claro 😍", "Óbvio 🔥"] },
+    { q: "5/10 — Nosso encontro perfeito seria onde?", options: ["Cinema 🎥", "Restaurante 🍝", "Em casa juntinhos 😳"] },
+    { q: "6/10 — Se fôssemos viajar, pra onde iríamos?", options: ["Praia 🌊", "Hotel 🏨", "Qualquer lugar com você ❤️"] },
+    { q: "7/10 — Eu te faço bem?", options: ["Sim ✨", "Com certeza 💖", "Muito 😍"] },
+    { q: "8/10 — Já sentiu saudade minha?", options: ["Sim 😔", "Muita 😭", "Agora 😳"] },
+    { q: "9/10 — Você acha que daríamos certo juntos?", options: ["Sim 💘", "Muito 💞", "Perfeitamente 💑"] },
+    { q: "10/10 — Quer namorar comigo?", options: ["SIM ❤️", "Não 😭"], final: true }
+];
+
+let index = 0;
+
+const card = document.getElementById("card");
+const qText = document.getElementById("question");
+const optBox = document.getElementById("options");
+
+const finalScreen = document.getElementById("final-screen");
+const copyBtn = document.getElementById("copyBtn");
+const copied = document.getElementById("copied");
+
+loadQuestion();
+
 function loadQuestion() {
-    const qData = questions[current];
+    const data = questions[index];
+    qText.textContent = data.q;
+    optBox.innerHTML = "";
 
-    card.classList.remove("fade");
-    void card.offsetWidth;
-    card.classList.add("fade");
+    spawnEmojis(emojiThemes[index]); // ← troca animação de emojis
 
-    card.style.boxShadow = `0 0 25px ${pageColors[current]}`;
-
-    questionEl.textContent = qData.q;
-    optionsEl.innerHTML = "";
-
-    if (qData.final) return finalQuestion();
-
-    qData.options.forEach(opt => {
+    data.options.forEach((opt, i) => {
         const btn = document.createElement("button");
         btn.textContent = opt;
-        btn.style.background = pageColors[current];
-        btn.style.color = "white";
-        btn.onclick = () => {
-            current++;
-            loadQuestion();
-        };
-        optionsEl.appendChild(btn);
+        btn.classList.add("button-normal");
+
+        if (data.final && i === 1) {
+            btn.classList.remove("button-normal");
+            btn.classList.add("button-run");
+
+            btn.addEventListener("mouseover", () => {
+                const x = Math.random() * 200 - 100;
+                const y = Math.random() * 200 - 100;
+                btn.style.transform = `translate(${x}px, ${y}px)`;
+            });
+
+        } else {
+            btn.addEventListener("click", nextQuestion);
+        }
+
+        optBox.appendChild(btn);
     });
 }
 
-// 🟣 PERGUNTA FINAL
-function finalQuestion() {
-    optionsEl.innerHTML = "";
+function nextQuestion() {
+    index++;
 
-    const yes = document.createElement("button");
-    yes.textContent = "SIM 💗";
-    yes.style.background = "#ff1493";
-    yes.style.color = "white";
-    yes.onclick = showFinalScreen;
+    if (index >= questions.length) {
+        card.classList.add("hidden");
+        finalScreen.classList.remove("hidden");
+        spawnEmojis(["💖","💘","💞","🫶"]); // animação especial final
+        return;
+    }
 
-    const no = document.createElement("button");
-    no.id = "noBtn";
-    no.textContent = "NÃO 😭";
-    no.style.background = "#444";
-    no.style.color = "white";
-
-    no.onmouseover = () => {
-        const x = (Math.random() * 160) - 80;
-        const y = (Math.random() * 160) - 80;
-        no.style.transform = `translate(${x}px, ${y}px)`;
-    };
-
-    optionsEl.appendChild(yes);
-    optionsEl.appendChild(no);
+    card.style.animation = "fadeIn 0.35s ease";
+    loadQuestion();
 }
 
-// 🟣 TELA FINAL
-function showFinalScreen() {
-    card.style.display = "none";
-    finalScreen.classList.remove("hidden");
-
-    // CORAÇÕES SUBINDO
-    setInterval(() => {
-        const heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerHTML = "💗";
-        heart.style.left = Math.random() * 100 + "%";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 3000);
-    }, 300);
-
-    // BOTÃO DE COPIAR
-    document.getElementById("copyBtn").onclick = () => {
-        navigator.clipboard.writeText("Eu aceitei namorar contigo 💗🥹");
-        alert("Mensagem copiada!");
-    };
-}
-
-loadQuestion();
+// Copiar texto final
+copyBtn.onclick = () => {
+    const text = document.getElementById("copyText");
+    text.select();
+    document.execCommand("copy");
+    copied.classList.remove("hidden");
+    setTimeout(() => copied.classList.add("hidden"), 1500);
+};

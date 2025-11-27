@@ -8,16 +8,17 @@
       background: #ffe6f2;
       font-family: Arial, sans-serif;
       text-align: center;
-      margin-top: 100px;
+      overflow: hidden;
     }
 
     h1 {
       font-size: 32px;
+      margin-top: 60px;
     }
 
     .btn {
       padding: 15px 30px;
-      font-size: 20px;
+      font-size: 22px;
       border: none;
       border-radius: 10px;
       cursor: pointer;
@@ -34,6 +35,25 @@
       color: black;
       position: absolute;
     }
+
+    #contador {
+      font-size: 20px;
+      margin-top: 20px;
+      color: #d60077;
+      font-weight: bold;
+    }
+
+    .coracao {
+      position: fixed;
+      font-size: 30px;
+      animation: subir 2s linear forwards;
+      pointer-events: none;
+    }
+
+    @keyframes subir {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-200px) scale(1.5); opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -43,23 +63,51 @@
   <button id="sim" class="btn">Sim</button>
   <button id="nao" class="btn">Não</button>
 
+  <div id="contador">Tentativas de dizer não: 0</div>
+
   <script>
-    const nao = document.getElementById("nao");
     const sim = document.getElementById("sim");
+    const nao = document.getElementById("nao");
+    const contador = document.getElementById("contador");
+
+    let recusas = 0;
+    let velocidade = 1; // velocidade vai aumentando
 
     // Botão SIM
     sim.addEventListener("click", () => {
+      for (let i = 0; i < 40; i++) criarCoracao();
       alert("EU SABIA QUE VOCÊ IA ACEITAR 😍💞");
     });
 
+    // Criar coração na tela
+    function criarCoracao() {
+      const heart = document.createElement("div");
+      heart.classList.add("coracao");
+      heart.innerText = "💖";
+
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.top = (window.innerHeight - 20) + "px";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 2000);
+    }
+
     // Botão NÃO fugindo
     nao.addEventListener("mouseenter", () => {
-      const x = Math.random() * (window.innerWidth - 100);
-      const y = Math.random() * (window.innerHeight - 50);
+      recusas++;
+      velocidade += 0.5;
 
+      contador.innerText = "Tentativas de dizer não: " + recusas;
+
+      const x = Math.random() * (window.innerWidth - 120);
+      const y = Math.random() * (window.innerHeight - 60);
+
+      nao.style.transition = (0.1 / velocidade) + "s"; 
       nao.style.left = `${x}px`;
       nao.style.top = `${y}px`;
     });
+
   </script>
 
 </body>

@@ -2,173 +2,202 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Uma Pergunta Muito Importante ❤️</title>
-
+<title>Formulário Romântico ❤️</title>
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-
     body {
         margin: 0;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
+        padding: 0;
         font-family: "Poppins", sans-serif;
-
-        /* FUNDO ANIMADO */
-        background: linear-gradient(45deg, #ff4d79, #ff93d3, #ffb86c, #ff4d79);
-        background-size: 600% 600%;
-        animation: fundoAnimado 8s ease infinite;
+        background: linear-gradient(135deg, #ff73b9, #ff98a9, #ff6cc9);
+        background-size: 400% 400%;
+        animation: gradient 8s ease infinite;
+        height: 100vh;
+        overflow: hidden;
     }
 
-    @keyframes fundoAnimado {
+    @keyframes gradient {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
     }
 
-    h1 {
-        color: white;
-        text-shadow: 3px 3px 15px rgba(0,0,0,0.4);
-        font-size: 44px;
-        text-align: center;
-        animation: pulseText 1.5s infinite alternate;
-        margin-bottom: 50px;
-        padding: 0 20px;
-    }
-
-    @keyframes pulseText {
-        from { transform: scale(1); }
-        to { transform: scale(1.06); }
-    }
-
-    .buttons {
-        position: relative;
-        width: 80%;
-        height: 120px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 40px;
-        max-width: 500px;
-    }
-
-    button {
-        padding: 20px 35px;
-        font-size: 26px;
-        border: none;
-        border-radius: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: 0.2s;
-        letter-spacing: 1px;
-    }
-
-    #sim {
-        background: #00e676;
-        color: white;
-        box-shadow: 0 0 20px rgba(0, 230, 118, 0.7);
-        z-index: 5;
-    }
-
-    #sim:hover {
-        transform: scale(1.12);
-        box-shadow: 0 0 25px rgba(0, 255, 148, 1);
-    }
-
-    #nao {
-        background: #ff1744;
-        color: white;
-        position: absolute;
-        left: 250px;
-        top: 20px;
-        z-index: 999;
-        box-shadow: 0 0 20px rgba(255, 23, 68, 0.7);
-    }
-
-    #contador {
-        margin-top: 30px;
-        font-size: 28px;
-        color: white;
-        text-shadow: 2px 2px 8px #000;
+    .hearts {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        top: 0;
+        left: 0;
     }
 
     .heart {
-        position: fixed;
-        font-size: 40px;
-        bottom: -50px;
-        animation: subir 2.3s linear forwards;
-        pointer-events: none;
+        position: absolute;
+        color: rgba(255,255,255,0.8);
+        font-size: 24px;
+        animation: rise 6s linear infinite;
     }
 
-    @keyframes subir {
-        0% { opacity: 1; transform: translateY(0) rotate(0deg); }
-        100% { opacity: 0; transform: translateY(-900px) rotate(30deg); }
+    @keyframes rise {
+        from { transform: translateY(100vh) scale(0.6); opacity: 1; }
+        to { transform: translateY(-10vh) scale(1); opacity: 0; }
     }
 
+    .container {
+        width: 90%;
+        max-width: 480px;
+        margin: 0 auto;
+        margin-top: 10vh;
+        background: rgba(255, 255, 255, 0.25);
+        padding: 30px;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        text-align: center;
+        animation: fade 0.6s ease;
+    }
+
+    @keyframes fade {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    h2 {
+        color: white;
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+
+    button {
+        width: 85%;
+        margin: 8px 0;
+        padding: 14px;
+        font-size: 20px;
+        border: none;
+        border-radius: 14px;
+        background: white;
+        color: #ff2e83;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+        background: #ffe6f2;
+    }
+
+    .final {
+        font-size: 34px;
+        color: white;
+        font-weight: 800;
+        animation: fade 1s ease;
+    }
 </style>
 </head>
 <body>
 
-<h1>Quer namorar comigo? 😳❤️</h1>
+<div class="hearts" id="hearts"></div>
 
-<div class="buttons">
-    <button id="sim">SIM</button>
-    <button id="nao">NÃO</button>
+<div class="container" id="form">
+    <h2 id="question">Carregando...</h2>
+    <div id="options"></div>
 </div>
 
-<div id="contador">Tentativas restantes: <b>10</b></div>
-
 <script>
-const nao = document.getElementById("nao");
-const sim = document.getElementById("sim");
-const contador = document.querySelector("#contador b");
-let tentativas = 10;
-
-function moverNao() {
-    const x = Math.random() * (window.innerWidth - 150);
-    const y = Math.random() * (window.innerHeight - 150);
-    nao.style.left = x + "px";
-    nao.style.top = y + "px";
-}
-
-nao.addEventListener("mouseover", () => {
-    if (tentativas > 1) {
-        tentativas--;
-        contador.textContent = tentativas;
-        moverNao();
-    } else {
-        nao.remove();
-    }
-});
-
-sim.addEventListener("click", () => {
-
-    for (let i = 0; i < 40; i++) criarCoracao();
-
-    document.body.innerHTML = `
-        <h1 style="
-            font-size: 60px;
-            color: white;
-            text-shadow: 3px 3px 15px #000;">
-            EU JÁ SABIA ❤️🔥
-        </h1>
-    `;
-});
-
-function criarCoracao() {
+/* ❤️ Corações Subindo */
+setInterval(() => {
     const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.textContent = "❤️";
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = 4 + Math.random() * 4 + "s";
+    document.getElementById("hearts").appendChild(heart);
+    setTimeout(() => heart.remove(), 7000);
+}, 500);
 
-    heart.style.left = Math.random() * window.innerWidth + "px";
 
-    document.body.appendChild(heart);
+/* ❤️ PERGUNTAS */
+const perguntas = [
+    {
+        q: "Qual dessas flores você mais gosta?",
+        op: ["🌹 Rosas", "🌻 Girassóis", "🌸 Cerejeira"]
+    },
+    {
+        q: "Qual desses lugares você acha mais romântico?",
+        op: ["🏖 Praia", "🌌 Céu estrelado", "🎡 Parque de diversões"]
+    },
+    {
+        q: "Você gosta de mim?",
+        op: ["Sim 😳", "Claro 😍"]
+    },
+    {
+        q: "Se eu te chamasse pra sair, você aceitaria? 😏",
+        op: ["Aceitaria 💘", "Com certeza 😳"]
+    },
+    {
+        q: "Quer namorar comigo? 💖",
+        op: ["SIM 💍", "NÃO 😭"]
+    }
+];
 
-    setTimeout(() => heart.remove(), 2300);
+let etapa = 0;
+let fugas = 0;
+
+function carregarPergunta() {
+    const p = perguntas[etapa];
+
+    document.getElementById("question").innerText = p.q;
+
+    const box = document.getElementById("options");
+    box.innerHTML = "";
+
+    p.op.forEach((op, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = op;
+
+        // Última pergunta → botão NÃO foge
+        if (etapa === 4 && i === 1) {
+            btn.id = "naoBtn";
+            btn.onmouseover = fugir;
+        } else {
+            btn.onclick = proximaEtapa;
+        }
+        box.appendChild(btn);
+    });
 }
+
+function proximaEtapa() {
+    etapa++;
+    if (etapa >= perguntas.length) return final();
+
+    carregarPergunta();
+}
+
+/* 😭 Botão NÃO fugindo */
+function fugir() {
+    if (fugas >= 5) {
+        return final();
+    }
+    fugas++;
+
+    const btn = document.getElementById("naoBtn");
+    btn.style.position = "absolute";
+    btn.style.left = Math.random() * 70 + "%";
+    btn.style.top = Math.random() * 70 + "%";
+}
+
+function final() {
+    document.getElementById("form").innerHTML = `
+        <div class="final">
+            💖 EU SABIA QUE VOCÊ IA ACEITAR! 💖<br><br>
+            Somos oficialmente NAMORADOS 😍💍
+        </div>
+    `;
+}
+
+carregarPergunta();
 </script>
 
 </body>
